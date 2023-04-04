@@ -45,7 +45,47 @@ function increaseScore() {
 function collisionCheck() {
     //create bounding Boxes for the bird and the pipes
 
-    
+    const birdBox = {
+        x: birdX,
+        y: birdY,
+        width: BIRD_WIDTH,
+        height: BIRD_HEIGHT
+    }
+
+    const topPipebox = {
+        x: pipeX,
+        y: pipeY - PIPE_GAP + BIRD_HEIGHT,
+        width: PIPE_WIDTH,
+        height: pipeY
+    }
+
+    const bottomPipeBox = {
+        x: pipeX,
+        y: pipeY + PIPE_GAP + BIRD_HEIGHT,
+        width: PIPE_WIDTH,
+        height: canvas.height - pipeY -PIPE_GAP
+    }
+
+    // Check for collision with upper pipe box
+    if (birdBox.x + birdBox.width > topPipebox.x &&
+        birdBox.x < topPipebox.x + topPipebox.width &&
+        birdBox.y < topPipebox.y) {
+            return true;
+
+        }
+
+        // Check for collision with lower pipe box
+        if(birdBox.x + birdBox.width > bottomPipeBox.x &&
+            birdBox.x < bottomPipeBox.x + bottomPipeBox.width &&
+            birdBox.y + birdBox.height > bottomPipeBox.y) {
+                return true;
+            }
+
+            // Check if bird hits boundaries
+            if (birdY < 0 || birdY + BIRD_HEIGHT > canvas.height) {
+                return true;
+            }
+            return false;   
 }
 
 function hideEndMenu() {
@@ -95,7 +135,7 @@ function loop() {
         pipeX -= 2;
     }
     // reset pipes
-    if (pipeX < -5){
+    if (pipeX < -50){
         pipeX = 400;
         pipeY = Math.random() * (canvas.height - PIPE_GAP) + PIPE_WIDTH;
     }
